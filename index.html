@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VZ8Q9R95DE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VZ8Q9R95DE');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="description" content="Secuenciador web basado en Samples, permite cargar samples y usar Efectos">
+<meta name="author" content="synth.esthesia">
+
+<title>𒀱 ✯✟ZzAmpleR bEliKo✟✯</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="logo-header">
+        <img src="./Imagenes/logo.webp" alt="ZzAmpleR bEliKon Logo" class="logo">
+      </div>
+      <h1>✟✯✞ZzAmpleR bElLak0✞✯✟</h1>
+    </header>
+
+    <!-- Controles de tempo y reproducción -->
+    <section class="controls">
+      <div class="tempo-control">
+         <label for="tempo">TEMPO:</label>
+         <input type="range" id="tempo" min="17" max="300" value="120">
+         <span id="tempoDisplay">120</span>
+      </div>
+      <div class="playback-controls">
+         <button id="play">▶ PLAY</button>
+         <button id="stop">■ STOP</button>
+      </div>
+    </section>
+    
+    <!-- Master Effects Section (Moved to top) -->
+    <section class="master-effects">
+      <div class="effects-header">
+        <div class="effects-title"><span class="icon">🎛️</span> Master Effects</div>
+        <button id="toggleEffects">-</button>
+        <div class="master-volume-slider">
+          <label>🔊 Master Volume:</label>
+          <input type="range" id="master-volume" min="0" max="100" value="80">
+          <span id="master-volume-value">80%</span>
+        </div>
+      </div>
+      <div class="effects-controls" id="effectsControlsContainer">
+        <!-- Reverb Effect -->
+        <div class="effect">
+          <label>Reverb</label>
+          <label class="switch">
+            <input type="checkbox" id="reverbToggle">
+            <span class="slider-switch"></span>
+          </label>
+          <div class="knob">
+            <input type="range" id="reverbKnob" min="0" max="1" step="0.01" value="0.3">
+            <label>Wet</label>
+          </div>
+          <div class="knob">
+            <input type="range" id="reverbDecayKnob" min="1" max="5" step="0.1" value="2.5">
+            <label>Decay</label>
+          </div>
+        </div>
+        <!-- Delay Effect -->
+        <div class="effect">
+          <label>Delay</label>
+          <label class="switch">
+            <input type="checkbox" id="delayToggle">
+            <span class="slider-switch"></span>
+          </label>
+          <div class="knob">
+            <input type="range" id="delayKnob" min="0" max="0.5" step="0.01" value="0.15">
+            <label>Time</label>
+          </div>
+          <div class="knob">
+            <input type="range" id="delayFeedbackKnob" min="0" max="1" step="0.01" value="0.3">
+            <label>Feedback</label>
+          </div>
+        </div>
+        <!-- Filter Effect -->
+        <div class="effect">
+          <label>Filter</label>
+          <label class="switch">
+            <input type="checkbox" id="filterToggle">
+            <span class="slider-switch"></span>
+          </label>
+          <div class="knob">
+            <input type="range" id="filterKnob" min="1000" max="10000" step="100" value="10000">
+            <label>Freq</label>
+          </div>
+          <div class="knob">
+            <input type="range" id="filterQKnob" min="0" max="20" step="0.1" value="1">
+            <label>Q</label>
+          </div>
+        </div>
+        <!-- Distortion Effect -->
+        <div class="effect">
+          <label>Distortion</label>
+          <label class="switch">
+            <input type="checkbox" id="distortionToggle">
+            <span class="slider-switch"></span>
+          </label>
+          <div class="knob">
+            <input type="range" id="distortionKnob" min="0" max="1" step="0.01" value="0">
+            <label>Amount</label>
+          </div>
+        </div>
+        <!-- Chorus Effect (instead of Flanger in reference) -->
+        <div class="effect">
+          <label>Chorus</label>
+          <label class="switch">
+            <input type="checkbox" id="chorusToggle">
+            <span class="slider-switch"></span>
+          </label>
+          <div class="knob">
+            <input type="range" id="chorusKnob" min="0" max="1" step="0.01" value="0">
+            <label>Wet</label>
+          </div>
+        </div>
+        <!-- Phaser Effect -->
+        <div class="effect">
+          <label>Phaser</label>
+          <label class="switch">
+            <input type="checkbox" id="phaserToggle">
+            <span class="slider-switch"></span>
+          </label>
+          <div class="knob">
+            <input type="range" id="phaserKnob" min="0" max="1" step="0.01" value="0">
+            <label>Amount</label>
+          </div>
+          <div class="knob">
+            <input type="range" id="phaserRateKnob" min="0.05" max="5" step="0.01" value="0.5">
+            <label>Rate</label>
+          </div>
+        </div>
+        <!-- FrequencyShifter Effect -->
+        <div class="effect">
+          <label>FrequencyShifter</label>
+          <label class="switch">
+            <input type="checkbox" id="freqShifterToggle">
+            <span class="slider-switch"></span>
+          </label>
+          <div class="knob">
+            <input type="range" id="freqShifterKnob" min="-2000" max="2000" step="1" value="0">
+            <label>Freq</label>
+          </div>
+          <div class="knob">
+            <input type="range" id="freqShifterWetKnob" min="0" max="1" step="0.01" value="0">
+            <label>Dry/Wet</label>
+          </div>
+        </div>
+        <!-- Pitch Shift Effect -->
+        <div class="effect">
+          <label>Pitch Shift</label>
+          <label class="switch">
+            <input type="checkbox" id="pitchShiftToggle">
+            <span class="slider-switch"></span>
+          </label>
+          <div class="knob">
+            <input type="range" id="pitchShiftKnob" min="0" max="1" step="0.01" value="0">
+            <label>Pitch</label>
+          </div>
+        </div>
+        <!-- AutoWah Effect -->
+        <div class="effect">
+          <label>AutoWah</label>
+          <label class="switch">
+            <input type="checkbox" id="autoWahToggle">
+            <span class="slider-switch"></span>
+          </label>
+          <div class="knob">
+            <input type="range" id="autoWahFreqKnob" min="100" max="2000" step="1" value="350">
+            <label>Freq</label>
+          </div>
+          <div class="knob">
+            <input type="range" id="autoWahQKnob" min="0.1" max="20" step="0.1" value="5">
+            <label>Q</label>
+          </div>
+          <div class="knob">
+            <input type="range" id="autoWahDepthKnob" min="0" max="1" step="0.01" value="0">
+            <label>Depth</label>
+          </div>
+        </div>
+        <!-- Tremolo Effect -->
+        <div class="effect">
+          <label>Tremolo</label>
+          <label class="switch">
+            <input type="checkbox" id="tremoloToggle">
+            <span class="slider-switch"></span>
+          </label>
+          <div class="knob">
+            <input type="range" id="tremoloDepthKnob" min="0" max="1" step="0.01" value="0.3">
+            <label>Depth</label>
+          </div>
+          <div class="knob">
+            <input type="range" id="tremoloRateKnob" min="0.1" max="20" step="0.1" value="5">
+            <label>Rate</label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Controles de Preset -->
+    <section class="preset-controls">
+      <div class="preset-title"><span class="icon">🎛️</span>Presets</div>
+      <div>
+        <label for="presetSelect">Seleccionar:</label>
+        <select id="presetSelect">
+          <option value="Default">Default (Borrar)</option>
+          <option value="Preset1">Roland TR-707</option>
+          <option value="Preset2">Perreke🍑🥵 </option>
+          <option value="Preset3">Roland TR-808</option>
+          <option value="Preset4">Boombap</option>
+        </select>
+        <button id="loadPreset">Load</button>
+      </div>
+    </section>
+
+    <!-- Cuadrícula del secuenciador -->
+    <section class="sequencer">
+       <div id="sequencer-grid"></div>
+    </section>
+
+    <!-- La sección de efectos maestros se ha movido arriba -->
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="social-links">
+        <a href="https://www.instagram.com/synth.esthesia/" target="_blank" class="instagram-link">
+          <img src="./Imagenes/instagram-icon.svg" alt="Instagram" class="instagram-icon">
+          <span>@synth.esthesia ☽⚛︎</span>
+        </a>
+      </div>
+      <div class="copyright">
+        𒀱
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  
+  <!-- Script para bloquear zoom y doble tap en dispositivos móviles -->
+  <script>
+    // Prevenir zoom con gestos de pellizco
+    document.addEventListener('gesturestart', function(e) {
+      e.preventDefault();
+    });
+    
+    // Prevenir zoom con doble tap
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function(e) {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 300) {
+        e.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, false);
+    
+    // Prevenir zoom con gestos de pellizco en iOS
+    document.addEventListener('touchmove', function(e) {
+      if (e.scale !== 1) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+    
+    // Asegurar que el viewport se mantiene fijo en iOS
+    window.addEventListener('resize', function() {
+      // Forzar el viewport a mantener la escala 1
+      if (document.activeElement.tagName !== 'INPUT') {
+        document.body.style.width = window.innerWidth + 'px';
+      }
+    });
+  </script>
+</body>
+</html>
