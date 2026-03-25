@@ -206,6 +206,54 @@ button:hover {
   transform: scale(1.05);
   box-shadow: 0 0 10px var(--neon-pink), 0 0 10px var(--neon-blue);
 }
+
+/* Botón de mute por canal */
+.channel-mute-btn {
+  background: linear-gradient(45deg, #003020, #004030);
+  border: 1px solid rgba(0, 230, 120, 0.4);
+  border-image: none;
+  padding: 8px 12px;
+  color: #00e878;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.25s;
+  margin-left: 10px;
+  font-size: 1rem;
+  min-width: 44px;
+  box-shadow: 0 0 6px rgba(0, 232, 120, 0.25);
+}
+.channel-mute-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 14px rgba(0, 232, 120, 0.5);
+  background: linear-gradient(45deg, #005030, #006048);
+  border-color: rgba(0, 230, 120, 0.8);
+}
+/* Estado: canal silenciado */
+.channel-mute-btn.muted {
+  background: linear-gradient(45deg, #3a1000, #5a1800);
+  border-color: rgba(255, 100, 0, 0.6);
+  color: #ff6600;
+  box-shadow: 0 0 10px rgba(255, 100, 0, 0.4);
+  animation: mutePulse 2s ease-in-out infinite;
+}
+.channel-mute-btn.muted:hover {
+  background: linear-gradient(45deg, #5a1800, #7a2200);
+  box-shadow: 0 0 18px rgba(255, 100, 0, 0.7);
+}
+@keyframes mutePulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 100, 0, 0.4); }
+  50%       { box-shadow: 0 0 20px rgba(255, 100, 0, 0.8); }
+}
+/* Canal silenciado: atenuar pasos visualmente */
+.channel--muted .steps .step {
+  opacity: 0.35;
+  filter: saturate(0.2);
+}
+.channel--muted .channel-header {
+  border-image: none;
+  border-color: rgba(255, 100, 0, 0.35);
+  background: linear-gradient(90deg, rgba(80,20,0,0.3), rgba(40,10,0,0.2));
+}
 .channel-config {
   margin-top: 15px;
   text-align: center;

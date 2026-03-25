@@ -269,8 +269,10 @@ channels.forEach(ch => {
 
 /***** INTERFAZ DEL SECUENCIADOR *****/
 const sequencerState = [];
+const channelMuted = [];
 for (let i = 0; i < 7; i++) {
   sequencerState[i] = new Array(16).fill(false);
+  channelMuted[i] = false;
 }
 
 const sequencerGrid = document.getElementById('sequencer-grid');
@@ -293,6 +295,18 @@ for (let i = 0; i < 7; i++) {
   sampleNameLabel.textContent = '(' + audioFiles[i].split('/').pop() + ')';
   labelDiv.appendChild(sampleNameLabel);
   headerDiv.appendChild(labelDiv);
+
+  const muteBtn = document.createElement('button');
+  muteBtn.className = 'channel-mute-btn';
+  muteBtn.innerHTML = '🔊';
+  muteBtn.title = 'Silenciar canal';
+  muteBtn.addEventListener('click', () => {
+    channelMuted[i] = !channelMuted[i];
+    muteBtn.classList.toggle('muted', channelMuted[i]);
+    muteBtn.innerHTML = channelMuted[i] ? '🔇' : '🔊';
+    channelDiv.classList.toggle('channel--muted', channelMuted[i]);
+  });
+  headerDiv.appendChild(muteBtn);
 
   const configButton = document.createElement('button');
   configButton.className = 'channel-config-btn';
@@ -604,7 +618,7 @@ function playStep() {
     button.classList.toggle('current', step === currentStep);
   });
   for (let ch = 0; ch < 7; ch++) {
-    if (sequencerState[ch][currentStep] && buffers[ch]) {
+    if (sequencerState[ch][currentStep] && buffers[ch] && !channelMuted[ch]) {
       const sampleSource = audioCtx.createBufferSource();
       sampleSource.buffer = buffers[ch];
       // Pitch Shift modificado: 0 = dry, >0 = pitch up
