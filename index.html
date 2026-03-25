@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VZ8Q9R95DE"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VZ8Q9R95DE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-  gtag('config', 'G-VZ8Q9R95DE');
-</script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="description" content="Secuenciador web basado en Samples, permite cargar samples y usar Efectos">
-<meta name="author" content="synth.esthesia">
+    gtag('config', 'G-VZ8Q9R95DE');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Secuenciador web basado en Samples, permite cargar samples y usar Efectos">
+  <meta name="author" content="synth.esthesia">
 
-<title>𒀱 ✯✟ZzAmpleR bEliKo✟✯</title>
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <title>𒀱 ✯✟ZzAmpleR bEliKo✟✯</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
   <div class="app">
     <header>
@@ -31,16 +33,16 @@
     <!-- Controles de tempo y reproducción -->
     <section class="controls">
       <div class="tempo-control">
-         <label for="tempo">TEMPO:</label>
-         <input type="range" id="tempo" min="17" max="300" value="120">
-         <span id="tempoDisplay">120</span>
+        <label for="tempo">TEMPO:</label>
+        <input type="range" id="tempo" min="17" max="300" value="120">
+        <span id="tempoDisplay">120</span>
       </div>
       <div class="playback-controls">
-         <button id="play">▶ PLAY</button>
-         <button id="stop">■ STOP</button>
+        <button id="play">▶ PLAY</button>
+        <button id="stop">■ STOP</button>
       </div>
     </section>
-    
+
     <!-- Master Effects Section (Moved to top) -->
     <section class="master-effects">
       <div class="effects-header">
@@ -220,13 +222,13 @@
           <option value="Preset3">Roland TR-808</option>
           <option value="Preset4">Boombap</option>
         </select>
-        <button id="loadPreset">Load</button>
+        <button id="loadPreset">Cargar</button>
       </div>
     </section>
 
     <!-- Cuadrícula del secuenciador -->
     <section class="sequencer">
-       <div id="sequencer-grid"></div>
+      <div id="sequencer-grid"></div>
     </section>
 
     <!-- La sección de efectos maestros se ha movido arriba -->
@@ -247,33 +249,33 @@
   </footer>
 
   <script src="app.js"></script>
-  
+
   <!-- Script para bloquear zoom y doble tap en dispositivos móviles -->
   <script>
     // Prevenir zoom con gestos de pellizco
-    document.addEventListener('gesturestart', function(e) {
+    document.addEventListener('gesturestart', function (e) {
       e.preventDefault();
     });
-    
+
     // Prevenir zoom con doble tap
     let lastTouchEnd = 0;
-    document.addEventListener('touchend', function(e) {
+    document.addEventListener('touchend', function (e) {
       const now = Date.now();
       if (now - lastTouchEnd <= 300) {
         e.preventDefault();
       }
       lastTouchEnd = now;
     }, false);
-    
+
     // Prevenir zoom con gestos de pellizco en iOS
-    document.addEventListener('touchmove', function(e) {
+    document.addEventListener('touchmove', function (e) {
       if (e.scale !== 1) {
         e.preventDefault();
       }
     }, { passive: false });
-    
+
     // Asegurar que el viewport se mantiene fijo en iOS
-    window.addEventListener('resize', function() {
+    window.addEventListener('resize', function () {
       // Forzar el viewport a mantener la escala 1
       if (document.activeElement.tagName !== 'INPUT') {
         document.body.style.width = window.innerWidth + 'px';
@@ -281,4 +283,5 @@
     });
   </script>
 </body>
+
 </html>
