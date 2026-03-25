@@ -522,14 +522,60 @@ document.querySelectorAll('.load-sample-btn').forEach((btn, index) => {
 /***** CARGA DE PRESETS *****/
 const presetSelect = document.getElementById('presetSelect');
 const loadPresetButton = document.getElementById('loadPreset');
-loadPresetButton.addEventListener('click', () => {
-  const preset = presetSelect.value;
+
+// Almacena los patrones de todos los presets cargados desde JSON
+let presetPatternsData = null;
+
+// Carga el JSON de patrones al inicio
+fetch('./presetPatterns.json')
+  .then(res => res.json())
+  .then(data => { presetPatternsData = data; })
+  .catch(err => console.warn('No se pudo cargar presetPatterns.json', err));
+
+/**
+ * Aplica el patrón de pasos del JSON al grid del secuenciador.
+ * @param {string} preset - Nombre del preset (ej. 'Preset2')
+ */
+function applyPresetPattern(preset) {
+  if (!presetPatternsData || !presetPatternsData[preset]) return;
+  const pattern = presetPatternsData[preset].channels;
+
+  // Resetear todo el estado del secuenciador
+  for (let ch = 0; ch < 7; ch++) {
+    sequencerState[ch].fill(false);
+  }
+
+  // Aplicar nuevo patrón
+  pattern.forEach((channelData, chIdx) => {
+    if (chIdx >= 7) return;
+    channelData.steps.forEach((active, stepIdx) => {
+      sequencerState[chIdx][stepIdx] = active === 1;
+    });
+  });
+
+  // Reflejar estado en los botones del DOM
+  document.querySelectorAll('.channel').forEach((channelDiv, chIdx) => {
+    channelDiv.querySelectorAll('.step').forEach((btn, stepIdx) => {
+      btn.classList.toggle('active', sequencerState[chIdx][stepIdx]);
+    });
+  });
+
+  // Aplicar el BPM del preset si está definido
+  if (presetPatternsData[preset].bpm) {
+    tempoSlider.value = presetPatternsData[preset].bpm;
+    tempoDisplay.textContent = presetPatternsData[preset].bpm;
+  }
+}
+
+function loadPreset(preset) {
   if (preset === "Default") {
-    // Borrar samples de los canales
+    // Borrar samples y patrón
     for (let i = 0; i < 7; i++) {
       buffers[i] = null;
       sampleNames[i].textContent = "(No sample)";
+      sequencerState[i].fill(false);
     }
+    document.querySelectorAll('.step').forEach(btn => btn.classList.remove('active'));
   } else {
     const newAudioFiles = [];
     for (let i = 1; i <= 7; i++) {
@@ -538,7 +584,13 @@ loadPresetButton.addEventListener('click', () => {
     buffers.length = 0;
     audioFiles = newAudioFiles;
     loadSamples();
+    // Aplicar patrón desde JSON (con pequeño retraso para que el DOM esté listo)
+    setTimeout(() => applyPresetPattern(preset), 100);
   }
+}
+
+loadPresetButton.addEventListener('click', () => {
+  loadPreset(presetSelect.value);
 });
 
 /***** MOTOR DEL SECUENCIADOR CON TEMPO DINÁMICO *****/
@@ -626,6 +678,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mantener la altura mínima del contenedor de efectos
     document.querySelector('.master-effects').style.minHeight = isVisible ? '120px' : 'auto';
   });
+
+  // ---- Seleccionar y cargar Preset2 por defecto al abrir la app ----
+  presetSelect.value = 'Preset2';
+  loadPreset('Preset2');
+  // Aplicar el patrón una vez que el JSON esté cargado (fetch es asíncrono)
+  fetch('./presetPatterns.json')
+    .then(res => res.json())
+    .then(data => {
+      presetPatternsData = data;
+      applyPresetPattern('Preset2');
+    })
+    .catch(err => console.warn('No se pudo cargar presetPatterns.json en DOMContentLoaded', err));
 });
 
 function scheduleNextStep() {
